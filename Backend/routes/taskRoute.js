@@ -33,7 +33,9 @@ router.post("/createtasklist",async (req,res)=>{
 // Example = "taskListID":"sadh23hhu3uh25h23h"
 
 router.post("/createtask",createTaskMiddleware,(req, res)=>{
-    const {taskName,description,dueDate,period,periodType,taskListID} = req.body;
+    const {taskName,description,period,periodType,taskListID} = req.body;
+    const dueDate = req.dueDate;
+    
    
     const task = new TasksModel({
         taskName,description,dueDate,period,periodType,taskListID
