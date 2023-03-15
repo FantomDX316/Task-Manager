@@ -32,13 +32,14 @@ router.post("/createtasklist",async (req,res)=>{
 // set taskListID as header key with value as the document id of taskList inorder to be able to create a task
 // Example = "taskListID":"sadh23hhu3uh25h23h"
 
-router.post("/createtask",createTaskMiddleware,(req, res)=>{
+router.post("/createtask",createTaskMiddleware,async (req, res)=>{
     const {taskName,description,period,periodType,taskListID} = req.body;
     const dueDate = req.dueDate;
-    
+    const TaskList = await TaskListModel.findById(taskListID);
+    taskListName = TaskList.name;
    
     const task = new TasksModel({
-        taskName,description,dueDate,period,periodType,taskListID
+        taskListName,taskName,description,dueDate,period,periodType,taskListID
     });
     task.save().then((task)=>{res.json(task)});
     
@@ -47,8 +48,24 @@ router.post("/createtask",createTaskMiddleware,(req, res)=>{
 
 //ROUTE 3 - List task ( http://localhost:5000/api/tasklist )
 
-// router.get("/tasklist",(req,res)=>{
+router.get("/tasklist/:id",async (req,res)=>{
+    try{
+    const Task = await TasksModel.find({taskListID:req.params.id},{taskListName:1,taskName:1,description:1,periodType:1,period:1,dueDate:1});
+    
+    const taskItems = Task.map((item)=>{
+         const dueDateIST = `${item.dueDate.getDate()}-${item.dueDate.getMonth()+1}-${item.dueDate.getFullYear()}`;
+         
+        
+        return {...item._doc,dueDate:dueDateIST};
+         
+    })
 
-// })
+    res.status(200).json(taskItems);
+    
+    }catch(error){
+        res.status(500).json({"success":"false"})
+    }
+    
+})
 
 module.exports = router;
