@@ -6,6 +6,7 @@ const mongoConnect = require("./db_connect");
 mongoConnect();
 app.use(express.json());
 
+
 app.get('/',(req,res)=>{
     res.send('hello');
 });

@@ -29,20 +29,24 @@ router.post("/createtasklist",async (req,res)=>{
 
 // ROUTE 2 - Create tasks ( http://localhost:5000/api/createtask )
 
-router.post("/createtask",(req, res)=>{
-    // const {taskName,description,dueDate,period,periodType,taskListID} = req.body;
-    const {taskName,taskListID} = req.body; 
-    try{
-        console.log(taskName);
-    }catch(error){console.log(error)};
+// set taskListID as header key with value as the document id of taskList inorder to be able to create a task
+// Example = "taskListID":"sadh23hhu3uh25h23h"
+
+router.post("/createtask",createTaskMiddleware,(req, res)=>{
+    const {taskName,description,dueDate,period,periodType,taskListID} = req.body;
+   
+    const task = new TasksModel({
+        taskName,description,dueDate,period,periodType,taskListID
+    });
+    task.save().then((task)=>{res.json(task)});
     
 });
 
 
 //ROUTE 3 - List task ( http://localhost:5000/api/tasklist )
 
-router.get("/tasklist",(req,res)=>{
+// router.get("/tasklist",(req,res)=>{
 
-})
+// })
 
 module.exports = router;

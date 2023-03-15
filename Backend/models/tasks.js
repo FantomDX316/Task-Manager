@@ -3,24 +3,24 @@ const {Schema} = mongoose;
 
 const tasksSchema = new Schema({
     taskName:{
-        type:String,
+        type: String,
         required:true
     },
     description:{
-        type:String,
+        type: String,
         required:true
     },
     dueDate:{
-        type:Date
+        type: Date
     },
     period:{
-        type: String
+        type: Date
     },
     periodType:{
-        type:Date
+        type: String
     },
     taskListID:{
-        type:Schema.Types.ObjectID,
+        type: Schema.Types.ObjectID,
         ref:'TaskList'
     }
 });
